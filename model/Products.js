@@ -43,12 +43,18 @@ const productSchema=new mongoose.Schema({
         type:Object,
         required:true
     },
-    image_Url:[
-              {
-        type:String,
-     required:[true,"upload your shop profile image"]
-}],
-
+    images: [
+        {
+          public_id: {
+            type: String,
+            required: true,
+          },
+          url: {
+            type: String,
+            required: true,
+          },
+        },
+      ],
 
 rating:{
     type:Object

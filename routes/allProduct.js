@@ -10,10 +10,6 @@ const { registeruser } = require("../model/registeruser");
 
 router.get("/",async (req,res)=>{
 
-    
-
-
-
 const AllProduct=await Product.find().sort({createdAt:-1})
 
 res.send(AllProduct)

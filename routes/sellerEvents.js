@@ -6,7 +6,7 @@ const mongoose=require('mongoose');
 const {Event}=require('../model/DashboardEvent')
 const { registerseller } = require("../model/registerSeller");
 const multer  = require('multer')
-
+const cloudinary = require("cloudinary");
 
 router.get("/:id",async (req,res)=>{
 

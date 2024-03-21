@@ -19,10 +19,17 @@ const registerUserSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  image: {
-    type: String,
-    required: true,
-  },
+
+  image:{
+    public_id: {
+      type: String,
+      required: true,
+    },
+    url: {
+      type: String,
+      required: true,
+    },
+ },
   phoneNumber: {
     type: Number,
   },

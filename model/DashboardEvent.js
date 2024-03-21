@@ -59,10 +59,17 @@ const eventSchema=new mongoose.Schema({
         required:true
     },
     image_Url:[
-              {
-        type:String,
-     required:[true,"upload your Event product image"]
-}],
+        {
+            public_id: {
+                type: String,
+                required: true,
+              },
+              url: {
+                type: String,
+                required: true,
+              },
+        },
+    ],
 sold_out:{
 type:Number,
 default:0

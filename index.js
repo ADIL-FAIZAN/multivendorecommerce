@@ -2,11 +2,8 @@ const mongoose = require("mongoose");
 const express = require("express");
 const cors = require("cors");
 const app = express();
-const path = require("path")
 require("dotenv").config();
-
-
-
+const path = require("path");
 const allSeller = require("./routes/allseller");
 const registeruser = require("./routes/registeruser");
 const authuser = require("./routes/auth");
@@ -29,14 +26,13 @@ const sellerEvent = require("./routes/sellerEvents");
 const allseller = require("./routes/allseller");
 const allOrder = require("./routes/allOrder");
 const allUsers = require("./routes/AllUsers");
+const cloudinary = require("cloudinary");
 
-app.use(express.static("../uploads"));
-app.use(express.static("../sellerUpload"));
-app.use(express.static("../ShopProductsImages"));
-app.use(express.static("../AllEventImages"));
-app.use(express.static("../profileImage"));
 app.use(cors());
 app.use(express.json());
+
+app.use(express.static(path.resolve(__dirname,"build")));
+
 app.use("/api/registeruser", registeruser);
 app.use("/api/authuser", authuser);
 app.use("/api/registerShopSeller", registerSeller);
@@ -58,26 +54,25 @@ app.use("/api/allseller", allseller);
 app.use("/api/allOrder", allOrder);
 app.use("/api/allUsers", allUsers);
 app.use("/api/allSeller", allSeller);
-app.use("/api/admin-allProducts",AdminAllProducts)
+app.use("/api/admin-allProducts", AdminAllProducts);
 
-  //.connect("mongodb://127.0.0.1:27017/MultivendorEcommerce")
 mongoose
-.connect(process.env.MONGO_URL)
+  .connect(process.env.MONGO_URL)
 
   .then(() => console.log("Connecting with mongodb database"))
   .catch((err) => console.error("Error connecting to MongoDB:", err.message));
 
+  app.get("*", (req, res)=> {
+   
+    res.sendFile(path.resolve(__dirname,"build","index.html"));
+    });
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+
 const port = process.env.PORT || 5000;
-
-
-app.get("/",(req,res)=>{
-
-app.use(express.static(path.resolve(__dirname,"client","build")));
-res.sendFile(path.resolve(__dirname,"client","build","index.html")):
-
-})
-
-
-
-
 app.listen(port, () => console.log("listening on port", port));

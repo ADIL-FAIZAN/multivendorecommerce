@@ -5,32 +5,25 @@ const multer = require("multer");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const path = require("path");
+const cloudinary = require("cloudinary");
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "../profileImage");
-  },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(null, uniqueSuffix + "-" + file.originalname + ".png");
-  },
-});
-
-const upload = multer({ storage });
-
-router.put("/", upload.single("image"), async (req, res) => {
-  console.log(req.file);
-  console.log(req.body);
-  const filename = req.file.filename;
-  const fileUrl = path.join(filename);
-
-  const validateUser = await registeruser.findOne({ email: req.body.email });
-
-  validateUser.image = fileUrl;
-
+router.put("/", async (req, res) => {
+  
+  const validateUser = await registeruser.findOne({ email: req.body.emails });
+  console.log("validateuser",validateUser);
+  if (req.body.selectImage !== "") {
+    const imageId = validateUser.image.public_id;
+    await cloudinary.v2.uploader.destroy(imageId);
+    const myCloud = await cloudinary.v2.uploader.upload(req.body.selectImage, {
+      folder: "profileImage",
+    });
+    validateUser.image = {
+      public_id: myCloud.public_id,
+      url: myCloud.secure_url,
+    };
+  }
   const upImage = await validateUser.save();
   res.send(upImage);
   console.log(upImage);
 });
-
 module.exports = router;

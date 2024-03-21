@@ -22,10 +22,16 @@ const registerSellerSchema=new mongoose.Schema({
         type:String,
         default:"seller"
     },
-    shopimage:{
-        type:String,
-     //required:[true,"upload your shop profile image"]
-    },
+    shopimage: {
+        public_id: {
+          type: String,
+          required: true,
+        },
+        url: {
+          type: String,
+          required: true,
+        },
+      },
     zipcode:{
         type:Number,
         required:true

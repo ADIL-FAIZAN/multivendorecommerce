@@ -18,15 +18,9 @@ router.put("/:id", async (req, res) => {
   //console.log(req.body);
 
   const findOrder = await Order.findOne({ _id: req.params.id });
-  res.send(findOrder);
-
-  
-
+  res.send(findOrder);  
   findOrder.status = req.body.orderStatus
-
-
   if(req.body.orderStatus==="Deliverd"){
-
     findOrder.deliveredAt=Date.now()
     
     }
